@@ -1,0 +1,42 @@
+function setup() {
+  createCanvas(600, 600, WEBGL);
+  noFill();
+}
+
+function draw() {
+  background(165);
+  rotateY(millis() * 0.001); // Rotate the sphere over time
+  
+  // Parametric equation for lemniscate of Bernoulli
+  let a = 250; // Size of the lemniscate
+  let t = millis() * 0.001; // Time-based parameter to animate the shape
+  let r = a * cos(t) / (1 + sin(t) ** 2); // Radius of the sphere
+  let theta = a * t ; // Polar angle
+  let phi = atan2(cos(t), sin(t)); // Azimuthal angle
+
+  let x = r * sin(phi) * cos(theta);
+  let y = r * sin(phi) * sin(theta);
+  let z = r * cos(phi);
+
+  stroke(0);
+  strokeWeight(1);
+  push(); // Save the current transformation matrix
+  //translate(x, y, z); // Translate to the calculated position
+  sphere(3); // Draw a small sphere at the mapped point
+  pop(); // Restore the transformation matrix
+
+  // Draw the lemniscate shape
+  stroke(0);
+  strokeWeight(2);
+  beginShape();
+  for (let i = 0; i < 2 * PI; i += 0.01) {
+    let r = a * cos(i) / (1 + sin(i) ** 2);
+    let theta = a * i;
+    let phi = atan2(cos(i), sin(i));
+    let x = r * sin(phi) * cos(theta);
+    let y = r * sin(phi) * sin(theta);
+    let z = r * cos(phi);
+    vertex(x, y, z);
+  }
+  endShape(CLOSE);
+}
